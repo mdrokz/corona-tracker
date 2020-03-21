@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "wasm-build": "cd corona-scraper && wasm-pack build && npm run install",
+    "wasm-build": "cd corona-scraper && wasm-pack build && yarn install",
     "install": "yarn upgrade corona-tracker"
   },
   "keywords": [
@@ -16,10 +16,12 @@
     "webpack"
   ],
   "dependencies": {
+    "@zeit/next-sass": "^1.0.1",
     "corona-scraper": "file:./corona-scraper/pkg",
     "d3-scale": "^3.2.1",
     "lodash": "^4.17.15",
     "next": "9.3.0",
+    "node-sass": "^4.13.1",
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-simple-maps": "^1.0.0-beta.0",

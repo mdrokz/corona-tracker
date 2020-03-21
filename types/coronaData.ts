@@ -38,7 +38,8 @@ export interface groupData {
     Confirmed: number;
     Recovered: number;
     Deaths: number;
-    RecoveryInPercent: number;
+    RecoveryInPercent?: string;
+    colorValue?: string;
     Data: RawDatum[];
 }
 
@@ -46,7 +47,8 @@ export interface MapData {
     Confirmed: number;
     Deaths: number;
     Recovered: number;
-    RecoveryInPercent: number;
+    RecoveryInPercent: string;
+    colorValue: string;
 }
 
 export interface SummaryStats {
