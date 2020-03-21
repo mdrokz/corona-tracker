@@ -17,14 +17,16 @@
   ],
   "dependencies": {
     "corona-scraper": "file:./corona-scraper/pkg",
-    "d3-fetch": "^1.1.2",
     "d3-scale": "^3.2.1",
+    "lodash": "^4.17.15",
     "next": "9.3.0",
     "react": "16.13.0",
     "react-dom": "16.13.0",
-    "react-simple-maps": "^1.0.0-beta.0"
+    "react-simple-maps": "^1.0.0-beta.0",
+    "react-tooltip": "^4.1.2"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.149",
     "@types/node": "^13.9.2",
     "@types/react": "^16.9.23",
     "typescript": "^3.8.3"

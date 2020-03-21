@@ -33,6 +33,22 @@ export interface RawDatum {
     Longitude:        string;
 }
 
+export interface groupData {
+    Country: string;
+    Confirmed: number;
+    Recovered: number;
+    Deaths: number;
+    RecoveryInPercent: number;
+    Data: RawDatum[];
+}
+
+export interface MapData {
+    Confirmed: number;
+    Deaths: number;
+    Recovered: number;
+    RecoveryInPercent: number;
+}
+
 export interface SummaryStats {
     global:   China;
     china:    China;
