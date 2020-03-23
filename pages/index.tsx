@@ -13,7 +13,7 @@ var colorScale: any = null;
 
 class Home extends React.Component {
   cData: CoronaData;
-  coronaScraper: typeof import("d:/md/my-files/react-projects/corona-tracker/wasm/index");
+  coronaScraper: typeof import("../wasm/index");
   mapData: Map<string, MapData> = new Map();
   groupData: groupData[];
   async componentDidMount() {
