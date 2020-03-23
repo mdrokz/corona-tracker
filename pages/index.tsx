@@ -4,7 +4,7 @@ import React from 'react';
 
 import { ComposableMap, Geographies, Geography, Graticule, Sphere } from "react-simple-maps";
 import { scaleQuantile } from "d3-scale";
-import ReactTooltip from 'react-tooltip'
+import ReactTooltip from 'react-tooltip';
 import { CoronaData, MapData, groupData } from '../types/coronaData';
 import _ from "lodash";
 import SideBar from '../components/sidebar';
@@ -16,8 +16,7 @@ class Home extends React.Component {
   coronaScraper: typeof import("d:/md/my-files/react-projects/corona-tracker/wasm/index");
   mapData: Map<string, MapData> = new Map();
   groupData: groupData[];
-  //colorScale: any;
-  async componentWillMount() {
+  async componentDidMount() {
     this.coronaScraper = await import("../wasm/index");
     this.cData = await this.coronaScraper.getCoronaData();
 
@@ -71,7 +70,9 @@ class Home extends React.Component {
         <title>Corona Tracker</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <SideBar /> */}
+      <SideBar>
+
+      </SideBar>
       <main>
         <ComposableMap
           data-tip=""
@@ -96,7 +97,6 @@ class Home extends React.Component {
                       if (data != undefined) {
                         let tooltip = `${NAME} - \nConfirmed: ${data.Confirmed}\n Recovered: ${data.Recovered}\n Deaths: ${data.Deaths}`;
                         this.setState({ tooltipName: tooltip })
-                        console.log(this.mapData.get(NAME));
                       } else {
                         this.setState({ tooltipName: NAME })
                       }
@@ -125,8 +125,8 @@ class Home extends React.Component {
             }
           </Geographies>
         </ComposableMap>
+        <ReactTooltip>{this.state.tooltipName}</ReactTooltip>
       </main>
-      <ReactTooltip>{this.state.tooltipName}</ReactTooltip>
     </div >);
   }
 };
