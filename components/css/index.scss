@@ -7,7 +7,7 @@
   --portrait-width: 80vw;
   --header-height: 4rem;
   --secs: 0.4s;
-  --bg-left: springgreen;
+  --bg-left: white;
   --bg-right: cyan;
   --bg-main: lemonchiffon;
 }
@@ -116,6 +116,9 @@ body {
 
   .sidebar {
     background: var(--bg-left);
+    -moz-box-shadow: inset 0 0 6px #000000;
+    -webkit-box-shadow: inset 0 0 6px #000000;
+    box-shadow: inset 0 0 6px #000000;
 
     &.closed {
       transform: translateX(-100%);
@@ -151,7 +154,11 @@ body {
   // margin-left: 337px;
   margin-left: calc(105% - var(--portrait-width));
   //transform: translate(100px);
-  border-bottom: 10px solid transparent;
-  border-top: 50px solid transparent;
-  border-right: 135px solid #0AF;
+  // border-bottom: 10px solid transparent;
+  // border-top: 50px solid transparent;
+  // border-right: 135px solid #0AF;
+}
+
+.map {
+  width: 100vw;
 }

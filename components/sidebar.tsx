@@ -12,6 +12,7 @@ class SideBar extends React.Component {
     };
     constructor(props) {
         super(props);
+        console.log(props);
     }
 
     toggleSidebar = (event) => {
@@ -34,7 +35,7 @@ class SideBar extends React.Component {
                             &equiv;
               </div> */}
                         <a className={transition} id="arrow" href="#" onClick={this.toggleSidebar} >
-                            <span>⮜⮜</span>
+                            <span>⮜</span>
                         </a>
                         <div className={`sidebar ${leftOpen}`} >
                             <div className='header'>
@@ -50,7 +51,7 @@ class SideBar extends React.Component {
                             </div>
                         </div>
                     </div>
-
+                    {this.props.children}
                 </div>
             </>
         );

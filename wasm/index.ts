@@ -2,8 +2,8 @@ import { CoronaData } from './../types/coronaData';
 import * as wasm from "corona-scraper";
 
 
-export async function getCoronaData(): Promise<CoronaData> {
-    let data: CoronaData;
+export async function getCoronaData(): Promise<CoronaData[]> {
+    let data: CoronaData[];
     let ob = wasm.getCoronaData();
     // ob.then((res: string) => {
     //     debugger;
