@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 4300",
+    "start": "yarn build && next start -p 4300",
     "wasm-build": "cd corona-scraper && wasm-pack build && yarn install",
     "install": "yarn upgrade corona-tracker",
     "export": "next build && next export"
