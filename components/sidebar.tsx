@@ -2,6 +2,10 @@ import React from 'react';
 import './css/arrow.scss';
 import './css/index.scss';
 
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+
 
 class SideBar extends React.Component {
     state = {
@@ -45,8 +49,14 @@ class SideBar extends React.Component {
                             </div>
                             <div className='content'>
                                 <h3></h3>
-                                <p>
-                                </p>
+                                <Card>
+                                    <CardContent>
+                                        <p>
+                                            Under Construction
+                                        </p>
+                                    </CardContent>
+                                </Card>
+
                             </div>
                         </div>
                     </div>

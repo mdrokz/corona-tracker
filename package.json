@@ -17,10 +17,12 @@
     "webpack"
   ],
   "dependencies": {
+    "@material-ui/core": "^4.9.7",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "bootstrap": "^4.4.1",
     "corona-scraper": "file:./corona-scraper/pkg",
+    "d3-geo": "^1.11.9",
     "d3-scale": "^3.2.1",
     "lodash": "^4.17.15",
     "next": "9.3.0",
@@ -28,7 +30,8 @@
     "react": "16.13.0",
     "react-bootstrap": "^1.0.0",
     "react-dom": "16.13.0",
-    "react-simple-maps": "^1.0.0-beta.0"
+    "react-simple-maps": "file:./react-simple-maps/dist",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",

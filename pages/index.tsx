@@ -14,17 +14,16 @@ var colorScale: Function = null;
 function GeoMap(props) {
   let [toolTipName, usetoolTip] = React.useState<string>();
   let [show, setShow] = React.useState<boolean>();
-  // let target = React.useRef(null);
   return (
     <>
       <ComposableMap
+        top={60}
+        left={0}
         className="map"
         id="my-portal-root"
-        // data-tip=""
-        data-tooltip="hekllo"
         projectionConfig={{
           rotate: [-10, 0, 0],
-          scale: 100
+          scale: 100,
         }}
       >
         <Sphere stroke="#E4E5E6" strokeWidth={0.7} />
@@ -53,20 +52,20 @@ function GeoMap(props) {
                     usetoolTip("");
                     setShow(false);
                   }}
-                  // style={{
-                  //   default: {
-                  //     fill: "#D6D6DA",
-                  //     outline: "none"
-                  //   },
-                  //   // hover: {
-                  //   //   fill: "#F53",
-                  //   //   outline: "none"
-                  //   // },
-                  //   // pressed: {
-                  //   //   fill: "#E42",
-                  //   //   outline: "none"
-                  //   // }
-                  // }}
+                  style={{
+                    default: {
+                      // fill: "#D6D6DA",
+                      outline: "none"
+                    },
+                    hover: {
+                      //fill: "#F53",
+                      outline: "none"
+                    },
+                    pressed: {
+                      fill: "#E42",
+                      outline: "none"
+                    }
+                  }}
                   fill={props.colorScale != null ? props.colorScale(props.mapData.get(geo.properties.NAME) ? props.mapData.get(geo.properties.NAME).colorValue : "#EEE") : "#EEE"} //"#F5F4F6"}
                 />
               );
