@@ -1,29 +1,27 @@
 import Head from 'next/head'
 
+import MouseTooltip from '../components/MouseTooltip';
 import React from 'react';
-
-import 'react-tippy/dist/tippy.css';
-
-import {
-  Tooltip,
-} from 'react-tippy';
-
 import { ComposableMap, Geographies, Geography, Graticule, Sphere } from "react-simple-maps";
 import { scaleQuantile } from "d3-scale";
-import ReactTooltip from 'react-tooltip';
 import { CoronaData, MapData, groupData } from '../types/coronaData';
 import _ from "lodash";
 import SideBar from '../components/sidebar';
+
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
-var colorScale: any = null;
+var colorScale: Function = null;
 
 function GeoMap(props) {
   let [toolTipName, usetoolTip] = React.useState<string>();
+  let [show, setShow] = React.useState<boolean>();
+  // let target = React.useRef(null);
   return (
     <>
       <ComposableMap
         className="map"
-        data-tip=""
+        id="my-portal-root"
+        // data-tip=""
+        data-tooltip="hekllo"
         projectionConfig={{
           rotate: [-10, 0, 0],
           scale: 100
@@ -35,10 +33,11 @@ function GeoMap(props) {
           {({ geographies }) =>
             geographies.map(geo => {
               return (
+
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  onMouseEnter={() => {
+                  onMouseEnter={(evt) => {
                     const { NAME, POP_EST } = geo.properties;
 
                     let data = props.mapData.get(NAME);
@@ -48,9 +47,11 @@ function GeoMap(props) {
                     } else {
                       usetoolTip(NAME);
                     }
+                    setShow(true);
                   }}
                   onMouseLeave={() => {
                     usetoolTip("");
+                    setShow(false);
                   }}
                   // style={{
                   //   default: {
@@ -73,7 +74,17 @@ function GeoMap(props) {
           }
         </Geographies>
       </ComposableMap>
-      <ReactTooltip>{toolTipName}</ReactTooltip>
+      <MouseTooltip
+        visible={show}
+        offsetX={0}
+        offsetY={10}
+      >
+        <div className="con-tooltip top">
+          <p>{toolTipName}</p>
+          <div className="tooltip ">
+          </div>
+        </div>
+      </MouseTooltip>
     </>);
 }
 
@@ -87,7 +98,7 @@ class Home extends React.Component {
     try {
       this.cData = await this.coronaScraper.getCoronaData();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     if (this.cData) {
@@ -124,16 +135,16 @@ class Home extends React.Component {
             "#e2492d", // 6
             "#be3d26", // 7
             "#9a311f", // 8
-            "#782618" // 9
+            "#782618"  // 9
           ]);
       this.setState({ colorScale: colorScale });
-      console.log(this.mapData);
+      //console.log(this.mapData);
     }
   }
   state = { tooltipName: "", colorScale: null };
   constructor(props) {
     super(props);
-    console.log(this.state);
+    // console.log(this.state);
   }
 
   render() {
@@ -144,14 +155,7 @@ class Home extends React.Component {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SideBar>
-        <Tooltip
-          // options
-          title="Welcome to React"
-          position="bottom"
-          trigger="mouseenter"
-        >
-          <GeoMap colorScale={this.state.colorScale} mapData={this.mapData}></GeoMap>
-        </Tooltip>
+        <GeoMap colorScale={this.state.colorScale} mapData={this.mapData}></GeoMap>
       </SideBar>
     </div >);
   }

@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 4300",
     "wasm-build": "cd corona-scraper && wasm-pack build && yarn install",
-    "install": "yarn upgrade corona-tracker"
+    "install": "yarn upgrade corona-tracker",
+    "export": "next build && next export"
   },
   "keywords": [
     "webassembly",
@@ -18,17 +19,16 @@
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
+    "bootstrap": "^4.4.1",
     "corona-scraper": "file:./corona-scraper/pkg",
     "d3-scale": "^3.2.1",
     "lodash": "^4.17.15",
     "next": "9.3.0",
     "node-sass": "^4.13.1",
-    "rc-tooltip": "^4.0.3",
     "react": "16.13.0",
+    "react-bootstrap": "^1.0.0",
     "react-dom": "16.13.0",
-    "react-simple-maps": "^1.0.0-beta.0",
-    "react-tippy": "^1.3.4",
-    "react-tooltip": "^4.1.2"
+    "react-simple-maps": "^1.0.0-beta.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",
