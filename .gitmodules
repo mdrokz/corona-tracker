@@ -1,2 +1,3 @@
 [submodule "corona-scraper"]
+	path=corona-scraper
 	url = https://github.com/mdrokz/corona-scraper.git
