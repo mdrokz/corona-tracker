@@ -30,6 +30,7 @@
     "react": "16.13.0",
     "react-bootstrap": "^1.0.0",
     "react-dom": "16.13.0",
+    "react-ga": "^2.7.0",
     "react-simple-maps": "file:./react-simple-maps/dist",
     "topojson-client": "^3.1.0"
   },

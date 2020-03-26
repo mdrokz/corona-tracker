@@ -1,12 +1,21 @@
 import Head from 'next/head'
 
 import MouseTooltip from '../components/MouseTooltip';
+import { initGA, logPageView } from "../components/googleAnalytics";
+
 import React from 'react';
+
 import { ComposableMap, Geographies, Geography, Graticule, Sphere } from "react-simple-maps";
 import { scaleQuantile } from "d3-scale";
 import { CoronaData, MapData, groupData } from '../types/coronaData';
 import _ from "lodash";
 import SideBar from '../components/sidebar';
+
+declare global {
+  interface Window {
+    GA_INITIALIZED: boolean;
+  }
+}
 
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 var colorScale: Function = null;
@@ -87,12 +96,20 @@ function GeoMap(props) {
     </>);
 }
 
+//var window: any;
+
 class Home extends React.Component {
   cData: CoronaData[];
   coronaScraper: typeof import("../wasm/index");
   mapData: Map<string, MapData> = new Map();
   groupData: groupData[];
   async componentDidMount() {
+    if (!window.GA_INITIALIZED) {
+      initGA();
+      window.GA_INITIALIZED = true;
+    }
+    logPageView();
+
     this.coronaScraper = await import("../wasm/index");
     try {
       this.cData = await this.coronaScraper.getCoronaData();
@@ -148,11 +165,11 @@ class Home extends React.Component {
 
   render() {
     return (<div className="container">
-
       <Head>
-        <title>Corona Tracker</title>
+        <title>Covid-19 Tracker</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* <h1 className="c_header">Covid-19 Tracker By Mdrokz</h1> */}
       <SideBar>
         <GeoMap colorScale={this.state.colorScale} mapData={this.mapData}></GeoMap>
       </SideBar>
