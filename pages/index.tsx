@@ -104,11 +104,11 @@ class Home extends React.Component {
   mapData: Map<string, MapData> = new Map();
   groupData: groupData[];
   async componentDidMount() {
-    if (!window.GA_INITIALIZED) {
-      initGA();
-      window.GA_INITIALIZED = true;
-    }
-    logPageView();
+    // if (!window.GA_INITIALIZED) {
+    //   initGA();
+    //   window.GA_INITIALIZED = true;
+    // }
+    // logPageView();
 
     this.coronaScraper = await import("../wasm/index");
     try {
