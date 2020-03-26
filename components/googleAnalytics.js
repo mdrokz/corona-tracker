@@ -1,7 +1,6 @@
 import ReactGA from "react-ga"
 
 export const initGA = () => {
-    console.log(process.env.googleKey)
     ReactGA.initialize(process.env.googleKey)
 }
 
