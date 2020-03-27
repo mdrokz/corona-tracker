@@ -149,8 +149,16 @@ body {
 }
 
 .t-left {
+
   // margin-left: 337px;
-  margin-left: calc(105% - var(--portrait-width));
+  @media (orientation: portrait) {
+    margin: var(--portrait-width);
+  }
+
+  @media (orientation: landscape) {
+    margin: calc(1vw * var(--landscape-width));
+  }
+
   //transform: translate(100px);
   // border-bottom: 10px solid transparent;
   // border-top: 50px solid transparent;
