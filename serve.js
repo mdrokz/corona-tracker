@@ -22,9 +22,11 @@ var nStatic = require('node-static');
 var fileServer = new nStatic.Server('./out');
 
 var pageview = require('./views.json');
-
+console.log(typeof pageview.count);
 http.createServer(function (req, res) {
+    console.log(pageview);
     pageview.count++;
+    console.log(pageview);
     fs.writeFileSync('./views.json', JSON.stringify(pageview));
     fileServer.serve(req, res);
 
