@@ -46,9 +46,10 @@ function GeoMap(props) {
                   key={geo.rsmKey}
                   geography={geo}
                   onMouseEnter={(evt) => {
-                    const { NAME, POP_EST } = geo.properties;
+                    console.log(geo);
+                    const { NAME, POP_EST,ISO_A2 } = geo.properties;
 
-                    let data = props.mapData.get(NAME);
+                    let data = props.mapData.get(ISO_A2);
                     if (data != undefined) {
                       let tooltip = `${NAME} - \nConfirmed: ${data.Confirmed}\n Recovered: ${data.Recovered}\n Deaths: ${data.Deaths}`;
                       usetoolTip(tooltip);
@@ -75,7 +76,7 @@ function GeoMap(props) {
                       outline: "none"
                     }
                   }}
-                  fill={props.colorScale != null ? props.colorScale(props.mapData.get(geo.properties.NAME) ? props.mapData.get(geo.properties.NAME).colorValue : "#EEE") : "#EEE"} //"#F5F4F6"}
+                  fill={props.colorScale != null ? props.colorScale(props.mapData.get(geo.properties.ISO_A2) ? props.mapData.get(geo.properties.ISO_A2).colorValue : "#EEE") : "#EEE"} //"#F5F4F6"}
                 />
               );
             })
@@ -121,11 +122,11 @@ class Home extends React.Component {
       this.groupData =
         _.chain(this.cData)
           // Group the elements of Array based on `color` property
-          .groupBy("country")
+          .groupBy("countryInfo.iso2")
           // `key` is group's name (color), `value` is the array of objects
           .map((value, key) => (
             {
-              Country: key,
+              Iso2: key,
               Confirmed: _.sumBy(value, (v) => (v.cases)),
               Recovered: _.sumBy(value, (v) => (v.recovered)),
               Deaths: _.sumBy(value, (v) => (v.deaths)),
@@ -138,7 +139,9 @@ class Home extends React.Component {
         d.colorValue = ((d.Confirmed / maxConfirmed) * 100).toFixed(2);
         return d;
       })
-      this.groupData.forEach(c => this.mapData.set(c.Country == "USA" ? "United States of America" : c.Country, { Confirmed: c.Confirmed, Deaths: c.Deaths, Recovered: c.Recovered, RecoveryInPercent: c.RecoveryInPercent, colorValue: c.colorValue }))
+      // c.Country == "USA" ? "United States of America" : c.Country
+      this.groupData.forEach(c => this.mapData.set(c.Iso2, { Confirmed: c.Confirmed, Deaths: c.Deaths, Recovered: c.Recovered, RecoveryInPercent: c.RecoveryInPercent, colorValue: c.colorValue }))
+      console.log(this.groupData)
       colorScale =
         scaleQuantile()
           .domain(this.groupData.map(d => d.colorValue))

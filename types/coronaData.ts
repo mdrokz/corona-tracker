@@ -34,7 +34,7 @@
 // }
 
 export interface groupData {
-    Country: string;
+    Iso2: string;
     Confirmed: number;
     Recovered: number;
     Deaths: number;
