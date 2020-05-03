@@ -49,6 +49,7 @@ export interface MapData {
     Recovered: number;
     RecoveryInPercent: string;
     colorValue: string;
+    index: number
 }
 
 // export interface SummaryStats {
