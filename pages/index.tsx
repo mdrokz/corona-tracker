@@ -19,9 +19,8 @@ declare global {
 }
 
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
-const rContext = React.createContext<contextData>({ leftOpen: null, index: 0 });
+// const rContext = React.createContext<contextData>({ leftOpen: false, index: 0 });
 var colorScale: Function = null;
-var b = false;
 
 function GeoMap(props: mapProps) {
   let [toolTipName, usetoolTip] = React.useState<string>();
@@ -62,8 +61,8 @@ function GeoMap(props: mapProps) {
                   }}
                   onMouseDown={() => {
                     const { ISO_A2 } = geo.properties;
-                    b = !b
-                    props.setIndex({ leftOpen: b, index: props.mapData.get(ISO_A2).index });
+                    console.log(props.mapData.get(ISO_A2))
+                    props.setIndex({ leftOpen: true, index: props.mapData.get(ISO_A2).index });
                   }}
                   onMouseLeave={() => {
                     usetoolTip("");
@@ -124,6 +123,7 @@ class Home extends React.Component {
     this.coronaScraper = await import("../wasm/index");
     try {
       this.cData = await this.coronaScraper.getCoronaData();
+      this.coronaScraper.getWhoNews();
       console.log(this.cData);
     } catch (e) {
       console.error(e);
@@ -169,13 +169,17 @@ class Home extends React.Component {
       this.setState({ colorScale: colorScale });
     }
   }
-  state = { colorScale: null, pData: { leftOpen: null, index: 0 } };
+  state = { colorScale: null, pData: { leftOpen: null, index: null } };
   constructor(props) {
     super(props);
   }
 
   getIndex = (coData: contextData) => {
     this.setState({ pData: coData });
+  }
+
+  clearIndex = () => {
+    this.setState({pData: { leftOpen: null, index: 0 }})
   }
 
   render() {
@@ -185,11 +189,10 @@ class Home extends React.Component {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <h1 className="c_header">Covid-19 Tracker By Mdrokz</h1> */}
-      <rContext.Provider value={this.state.pData}>
-        <SideBar cData={this.cData} rContext={rContext}>
-          <GeoMap colorScale={this.state.colorScale} mapData={this.mapData} setIndex={this.getIndex}></GeoMap>
-        </SideBar>
-      </rContext.Provider>
+
+      <SideBar cData={this.cData} ctxData={this.state.pData} clearIndex={this.clearIndex}>
+        <GeoMap colorScale={this.state.colorScale} mapData={this.mapData} setIndex={this.getIndex}></GeoMap>
+      </SideBar>
     </div >);
   }
 };

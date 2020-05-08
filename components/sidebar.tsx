@@ -16,14 +16,13 @@ import { contextData } from '../types/reactTypes';
 
 interface SidebarProps {
     cData: CoronaData[],
-    rContext: React.Context<contextData>
+    ctxData: contextData,
+    clearIndex: Function
 }
-
-
 
 class SideBar extends React.Component<SidebarProps> {
     state = {
-        leftOpen: true,
+        leftOpen: false,
         rightOpen: false,
         text: "⮜⮜",
         class: "",
@@ -40,16 +39,29 @@ class SideBar extends React.Component<SidebarProps> {
     static getDerivedStateFromProps(props: SidebarProps, state) {
         // console.log(props, state)
         if (props.cData && state.cData.length == 0) {
-            // console.log(props.cData);
             return { cData: props.cData, cData2: props.cData }
         }
+
         return null;
+    }
+
+    componentDidUpdate(prevProps: SidebarProps) {
+        if (this.props.ctxData.index !== prevProps.ctxData.index && this.props.ctxData.index != null) {
+            let data = [this.props.cData[this.props.ctxData.index]]
+            this.setState({ leftOpen: this.props.ctxData.leftOpen,cData2:data });
+        }
+
     }
 
     toggleSidebar = (event) => {
         let key = `${event.currentTarget.parentNode.id}Open`;
-        this.setState({ [key]: !this.state[key] });
-        console.log(this.state.leftOpen)
+        this.setState({ [key]: !this.state[key]});
+        if(this.state.leftOpen == false) {
+            this.setState({cData2:this.props.cData});
+        } else {
+            this.props.clearIndex();
+        }
+        
     }
 
     onSelect = (event) => {
@@ -79,75 +91,69 @@ class SideBar extends React.Component<SidebarProps> {
         // let rightOpen = this.state.rightOpen ? 'open' : 'closed';
         let transition = leftOpen == 'open' ? 't-left' : '';
 
-        let Consumer = this.props.rContext.Consumer;
-
         return (
             <>
-                <Consumer>{data => (
 
-                    <div id='layout'>
-                        {console.log(this.state.leftOpen != data.leftOpen)}
-                        <div id='left' className={this.state.leftOpen != data.leftOpen ? 'open' : 'closed'} >
-                            {/* <div className='icon'
+                <div id='layout'>
+                    <div id='left' className={leftOpen} >
+                        {/* <div className='icon'
                             onClick={this.toggleSidebar} >
                             &equiv;
               </div> */}
-                            <a className={this.state.leftOpen != data.leftOpen ? 'open' ? 't-left' : '' : ''} id="arrow" href="#" onClick={this.toggleSidebar} >
-                                <span>⮜</span>
-                            </a>
-                            <div className={`sidebar ${this.state.leftOpen != data.leftOpen ? 'open' : 'closed'}`} >
-                                <div>
-                                    <Select
-                                        labelId="demo-simple-select-filled-label"
-                                        id="demo-simple-select-filled"
-                                        className='bar_header bar_space'
-                                        value={this.state.selectValue}
-                                        onChange={this.onSelect}
-                                        autoWidth={true}
+                        <a className={transition} id="arrow" href="#" onClick={this.toggleSidebar} >
+                            <span>⮜</span>
+                        </a>
+                        <div className={`sidebar ${leftOpen}`} >
+                            <div>
+                                <Select
+                                    labelId="demo-simple-select-filled-label"
+                                    id="demo-simple-select-filled"
+                                    className='bar_header bar_space'
+                                    value={this.state.selectValue}
+                                    onChange={this.onSelect}
+                                    autoWidth={true}
+                                >
+                                    <MenuItem value={'News'}>WHO News</MenuItem>
+                                    <MenuItem value={'Guidelines'}>WHO Guidelines</MenuItem>
+                                    <MenuItem value={'Infection'}>C19 Data</MenuItem>
+                                </Select>
+                                <form noValidate autoComplete="off" onSubmit={this.onSubmit}>
+                                    <TextField className="bar_space" label="Country" onChange={this.onInput}></TextField>
+                                    <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        startIcon={<SearchIcon />}
+                                        style={{ margin: '16px' }}
+                                        type="submit"
                                     >
-                                        <MenuItem value={'News'}>WHO News</MenuItem>
-                                        <MenuItem value={'Guidelines'}>WHO Guidelines</MenuItem>
-                                        <MenuItem value={'Infection'}>C19 Data</MenuItem>
-                                    </Select>
-                                    <form noValidate autoComplete="off" onSubmit={this.onSubmit}>
-                                        <TextField className="bar_space" label="Country" onChange={this.onInput}></TextField>
-                                        <Button
-                                            variant="outlined"
-                                            color="primary"
-                                            startIcon={<SearchIcon />}
-                                            style={{ margin: '16px' }}
-                                            type="submit"
-                                        >
-                                            Search
+                                        Search
                                     </Button>
-                                    </form>
-                                    {/* <h3 className='title' >
+                                </form>
+                                {/* <h3 className='title' >
                                     Under Construction
                             </h3> */}
-                                </div>
+                            </div>
 
-                                <div className='content'>
-                                    {this.state.cData ? this.state.cData2.map((data, index) => {
-                                        return (
-                                            <Card key={index} className="m_card">
-                                                <img src={data.countryInfo.flag} />
-                                                <CardHeader title={data.continent + ',' + data.country} />
-                                                <CardContent>
-                                                    <p>
-                                                        Under Construction
+                            <div className='content'>
+                                {this.state.cData ? this.state.cData2.map((data, index) => {
+                                    return (
+                                        <Card key={index} className="m_card">
+                                            <img src={data.countryInfo.flag} />
+                                            <CardHeader title={data.continent + ',' + data.country} />
+                                            <CardContent>
+                                                <p>
+                                                    Under Construction
                                                 </p>
-                                                </CardContent>
-                                            </Card>
+                                            </CardContent>
+                                        </Card>
 
-                                        );
-                                    }) : null}
-                                </div>
+                                    );
+                                }) : null}
                             </div>
                         </div>
-                        {this.props.children}
                     </div>
-                )}
-                </Consumer>
+                    {this.props.children}
+                </div>
             </>
         );
     }
