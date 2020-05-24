@@ -17,5 +17,5 @@ export async function getCoronaData(): Promise<CoronaData[]> {
 }
 
 export function getWhoNews() {
-    wasm.scrape_who_news();
+    return wasm.scrape_who_news();
 }

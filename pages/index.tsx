@@ -11,6 +11,9 @@ import { CoronaData, MapData, groupData } from '../types/coronaData';
 import _ from "lodash";
 import SideBar from '../components/sidebar';
 import { contextData, mapProps } from '../types/reactTypes';
+import { GetServerSideProps } from 'next';
+import { Button } from '@material-ui/core';
+import { CardModal } from '../components/cards';
 
 declare global {
   interface Window {
@@ -24,7 +27,9 @@ var colorScale: Function = null;
 
 function GeoMap(props: mapProps) {
   let [toolTipName, usetoolTip] = React.useState<string>();
+  let [country, useCountry] = React.useState<string>();
   let [show, setShow] = React.useState<boolean>();
+  let ismobile = props.isMobile;
   return (
     <>
       <ComposableMap
@@ -61,8 +66,11 @@ function GeoMap(props: mapProps) {
                   }}
                   onMouseDown={() => {
                     const { ISO_A2 } = geo.properties;
-                    console.log(props.mapData.get(ISO_A2))
-                    props.setIndex({ leftOpen: true, index: props.mapData.get(ISO_A2).index });
+                    if (!ismobile) {
+                      props.setIndex({ leftOpen: true, index: props.mapData.get(ISO_A2).index });
+                    } else {
+                      useCountry(ISO_A2);
+                    }
                   }}
                   onMouseLeave={() => {
                     usetoolTip("");
@@ -91,27 +99,32 @@ function GeoMap(props: mapProps) {
           }
         </Geographies>
       </ComposableMap>
-      <MouseTooltip
+      {!ismobile && <MouseTooltip
         visible={show}
         offsetX={0}
         offsetY={10}
       >
         <div className="con-tooltip top">
           <p>{toolTipName}</p>
-          <div className="tooltip ">
+          <div className="tooltip">
           </div>
         </div>
-      </MouseTooltip>
+      </MouseTooltip>}
+      {ismobile && <CardModal isMobile={ismobile} open={show} infected={country ? props.cData[props.mapData.get(country).index] : null} selected={'Infection'}></CardModal>}
     </>);
 }
 
 //var window: any;
 
-class Home extends React.Component {
+class Home extends React.PureComponent {
   cData: CoronaData[];
   coronaScraper: typeof import("../wasm/index");
   mapData: Map<string, MapData> = new Map();
   groupData: groupData[];
+
+  // isMobile = () => {
+  //   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // }
 
   async componentDidMount() {
     // if (!window.GA_INITIALIZED) {
@@ -123,10 +136,12 @@ class Home extends React.Component {
     this.coronaScraper = await import("../wasm/index");
     try {
       this.cData = await this.coronaScraper.getCoronaData();
-      this.coronaScraper.getWhoNews();
-      console.log(this.cData);
     } catch (e) {
       console.error(e);
+    }
+
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      this.setState({ isMobile: true })
     }
 
     if (this.cData) {
@@ -169,7 +184,7 @@ class Home extends React.Component {
       this.setState({ colorScale: colorScale });
     }
   }
-  state = { colorScale: null, pData: { leftOpen: null, index: null } };
+  state = { colorScale: null, pData: { leftOpen: null, index: null }, isMobile: false };
   constructor(props) {
     super(props);
   }
@@ -179,7 +194,7 @@ class Home extends React.Component {
   }
 
   clearIndex = () => {
-    this.setState({pData: { leftOpen: null, index: 0 }})
+    this.setState({ pData: { leftOpen: null, index: null } })
   }
 
   render() {
@@ -190,11 +205,11 @@ class Home extends React.Component {
       </Head>
       {/* <h1 className="c_header">Covid-19 Tracker By Mdrokz</h1> */}
 
-      <SideBar cData={this.cData} ctxData={this.state.pData} clearIndex={this.clearIndex}>
-        <GeoMap colorScale={this.state.colorScale} mapData={this.mapData} setIndex={this.getIndex}></GeoMap>
+      <SideBar cData={this.cData} ctxData={this.state.pData} clearIndex={this.clearIndex} getWhoNews={this.coronaScraper != undefined ? this.coronaScraper.getWhoNews : null}>
+        <GeoMap colorScale={this.state.colorScale} mapData={this.mapData} setIndex={this.getIndex} isMobile={this.state.isMobile} cData={this.cData}></GeoMap>
       </SideBar>
     </div >);
   }
 };
-
 export default Home
+
