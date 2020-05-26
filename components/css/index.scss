@@ -286,6 +286,13 @@ body {
 
 }
 
+.home-progress {
+  display: block !important;
+  margin: auto;
+  top: 22rem;
+  position: relative;
+}
+
 @keyframes odsoky {
   0% {
     transform: translateY(6px);

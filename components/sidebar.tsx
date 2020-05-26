@@ -105,8 +105,11 @@ class SideBar extends React.Component<SidebarProps> {
             let data = [this.props.cData[this.props.ctxData.index]]
             this.setState({ leftOpen: this.props.ctxData.leftOpen, cData2: data, selectValue: 'Infection' });
         }
+    }
 
-        if (this.props.getWhoNews !== prevProps.getWhoNews) {
+
+    componentDidMount() {
+        if (this.props.getWhoNews) {
             this.getNews().then(res => this.setState({ newsData: res[0], paragraphData: res[1] }));
             // this.setState({ newsData: body });
         }
