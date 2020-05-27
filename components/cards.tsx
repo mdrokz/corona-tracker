@@ -9,6 +9,7 @@ import Fade from '@material-ui/core/Fade';
 import React from 'react';
 import { Button } from '@material-ui/core';
 import { CoronaData } from '../types/coronaData';
+import { List } from 'react-virtualized';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function CardModal(props: { infected?: CoronaData, selected: string, paragraph?: string, isMobile: boolean,open: boolean }) {
+export function CardModal(props: { infected?: CoronaData, selected: string, paragraph?: string, isMobile: boolean, open: boolean }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(props.open);
 
@@ -107,39 +108,56 @@ export function NewsData(props) {
 
 const InfectionCardMemo = (props: { cData2: any[], selectValue: string }) => {
     return (<>
-        {props.cData2 ? props.cData2.map((data, index) => {
-            return (
-                <Card key={index} className="m_card">
-                    <img src={data.countryInfo.flag} />
-                    <CardHeader title={data.continent + ',' + data.country} />
-                    <CardContent>
-                        <span>
-                            <CardModal isMobile={false} open={false} infected={data} selected={props.selectValue}></CardModal>
-                        </span>
-                    </CardContent>
-                </Card>
-
-            );
-        }) : null}</>)
+        <List
+            width={400}
+            height={1000}
+            rowHeight={330}
+            rowRenderer={({ index, key, style }) => InfectionCardRenderer({ index, key, style }, props.cData2, props.selectValue)}
+            rowCount={props.cData2.length}
+            overscanRowCount={3} />
+    </>)
 }
+
+const InfectionCardRenderer = ({ index, key, style }, data: any, selectValue: string) => {
+    return (
+        <Card key={key} style={style} className="m_card">
+            <img src={data[index].countryInfo.flag} />
+            <CardHeader title={data[index].continent + ',' + data[index].country} />
+            <CardContent>
+                <span>
+                    <CardModal isMobile={false} open={false} infected={data[index]} selected={selectValue}></CardModal>
+                </span>
+            </CardContent>
+        </Card>
+
+    )
+};
 
 export const InfectionCard = React.memo(InfectionCardMemo);
 
 const NewsCardMemo = (props: { newsData: string[], selectValue: string, paragraph: string[] }) => {
     return (<>
-        {props.newsData ? props.newsData.map((data, index) => {
-            return (
-                <Card key={index} className="m_card">
-                    <CardHeader title={data} />
-                    <CardContent>
-                        <span>
-                            <CardModal isMobile={false} open={false} paragraph={props.paragraph[index]} selected={props.selectValue}></CardModal>
-                        </span>
-                    </CardContent>
-                </Card>
+        <List width={400}
+            height={1000}
+            rowHeight={220}
+            rowRenderer={({ index, key, style }) => NewsCardRenderer({ index, key, style }, props.newsData, props.selectValue, props.paragraph)}
+            rowCount={props.newsData.length}
+            overscanRowCount={3}>
+        </List>
+    </>)
+}
 
-            );
-        }) : null}</>)
+const NewsCardRenderer = ({ index, key, style }, newsData: string[], selectValue: string, paragraph: string[]) => {
+    return (<>
+        <Card key={key} style={style} className="m_card">
+            <CardHeader title={newsData[index]} />
+            <CardContent>
+                <span>
+                    <CardModal isMobile={false} open={false} paragraph={paragraph[index]} selected={selectValue}></CardModal>
+                </span>
+            </CardContent>
+        </Card>
+    </>)
 }
 
 export const NewsCard = React.memo(NewsCardMemo);
