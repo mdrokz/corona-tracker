@@ -3,7 +3,7 @@ import Head from 'next/head'
 import MouseTooltip from '../components/MouseTooltip';
 import { initGA, logPageView } from "../components/googleAnalytics";
 
-import React from 'react';
+import { PureComponent, useState } from 'react';
 
 import { ComposableMap, Geographies, Geography, Graticule, Sphere } from "react-simple-maps";
 import { scaleQuantile } from "d3-scale";
@@ -26,9 +26,9 @@ const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-map
 var colorScale: Function = null;
 
 function GeoMap(props: mapProps) {
-  let [toolTipName, usetoolTip] = React.useState<string>();
-  let [country, useCountry] = React.useState<string>();
-  let [show, setShow] = React.useState<boolean>();
+  let [toolTipName, usetoolTip] = useState<string>();
+  let [country, useCountry] = useState<string>();
+  let [show, setShow] = useState<boolean>();
   let ismobile = props.isMobile;
   return (
     <>
@@ -116,7 +116,7 @@ function GeoMap(props: mapProps) {
 
 //var window: any;
 
-class Home extends React.PureComponent {
+class Home extends PureComponent {
   cData: CoronaData[];
   coronaScraper: typeof import("../wasm/index");
   mapData: Map<string, MapData> = new Map();
@@ -181,7 +181,7 @@ class Home extends React.PureComponent {
                 "#782618"  // 9
               ]);
           this.setState({ colorScale: colorScale, mapData: this.mapData });
-        }).finally(() => this.setState({ isLoading: false,getWhoNews: this.coronaScraper.getWhoNews }));
+        }).finally(() => this.setState({ isLoading: false, getWhoNews: this.coronaScraper.getWhoNews }));
       } catch (e) {
         console.error(e);
       }
@@ -195,7 +195,7 @@ class Home extends React.PureComponent {
 
 
   }
-  state = { colorScale: null, pData: { leftOpen: null, index: null }, isMobile: false, mapData: new Map<string, MapData>(), isLoading: false,getWhoNews: null };
+  state = { colorScale: null, pData: { leftOpen: null, index: null }, isMobile: false, mapData: new Map<string, MapData>(), isLoading: false, getWhoNews: null };
   constructor(props) {
     super(props);
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 // import Card from '@material-ui/core/Card';
 // import CardHeader from "@material-ui/core/CardHeader";
@@ -22,7 +22,7 @@ interface SidebarProps {
     getWhoNews(): Promise<WhoData>
 }
 
-class SideBar extends React.Component<SidebarProps> {
+class SideBar extends Component<SidebarProps> {
     state = {
         leftOpen: false,
         rightOpen: false,

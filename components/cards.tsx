@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import React from 'react';
+import { memo, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { CoronaData } from '../types/coronaData';
 import { List } from 'react-virtualized';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function CardModal(props: { infected?: CoronaData, selected: string, paragraph?: string, isMobile: boolean, open: boolean }) {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(props.open);
+    const [open, setOpen] = useState(props.open);
 
     const handleOpen = () => {
         setOpen(true);
@@ -133,7 +133,7 @@ const InfectionCardRenderer = ({ index, key, style }, data: any, selectValue: st
     )
 };
 
-export const InfectionCard = React.memo(InfectionCardMemo);
+export const InfectionCard = memo(InfectionCardMemo);
 
 const NewsCardMemo = (props: { newsData: string[], selectValue: string, paragraph: string[] }) => {
     return (<>
@@ -160,7 +160,7 @@ const NewsCardRenderer = ({ index, key, style }, newsData: string[], selectValue
     </>)
 }
 
-export const NewsCard = React.memo(NewsCardMemo);
+export const NewsCard = memo(NewsCardMemo);
 
 export function GuidelinesCard(props) {
     return (<></>)
